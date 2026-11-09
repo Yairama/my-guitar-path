@@ -24,7 +24,7 @@ function home() {
   const term = q.value.trim().toLowerCase();
   const list = SONGS.filter(s => (s.title + " " + s.artist + " " + (s.genre || "")).toLowerCase().includes(term))
     .filter(s => F.st === "all" || rec(s.id).status == F.st).filter(s => !F.d || diffOf(s) == F.d);
-  const key = { t: s => s.title, a: s => s.artist, b: s => s.bpm ?? -1, d: s => diffOf(s), s: s => rec(s.id).status };
+  const key = { n: s => SONGS.indexOf(s), t: s => s.title, a: s => s.artist, b: s => s.bpm ?? -1, d: s => diffOf(s), s: s => rec(s.id).status };
   list.sort((x, y) => { const a = key[F.k](x), b = key[F.k](y); const r = typeof a === "string" ? a.localeCompare(b) : a - b; return F.asc ? r : -r; });
   const th = (k, l, cls = "") => `<th data-k="${k}" class="${cls} ${F.k === k ? "on" + (F.asc ? " asc" : "") : ""}">${l}</th>`;
   app.innerHTML = `
@@ -34,7 +34,7 @@ function home() {
    <div class="g"><span class="lb">Estado</span>${["all", 0, 1, 2].map(v => `<button class="lk ${F.st == v ? "on" : ""}" data-st="${v}">${v === "all" ? "Todas" : STAT[v]}</button>`).join("")}</div>
    <div class="g"><span class="lb">Dificultad</span><button class="lk ${!F.d ? "on" : ""}" data-d="0">Todas</button>${[1, 2, 3, 4, 5].map(n => `<button class="dfil ${F.d == n ? "on" : ""}" data-d="${n}" title="${DIFF[n]}">${dots(n)}</button>`).join("")}</div>
    <div class="sp"></div><span class="lb">${list.length} resultado${list.length === 1 ? "" : "s"}</span></div>
-  ${list.length ? `<table class="idx"><thead><tr><th></th>${th("t", "Pieza")}${th("a", "Artista", "hm")}${th("b", "Tempo")}${th("d", "Dificultad")}${th("s", "Estado")}<th class="hm">Tab</th></tr></thead><tbody>
+  ${list.length ? `<table class="idx"><thead><tr>${th("n", "#")}${th("t", "Pieza")}${th("a", "Artista", "hm")}${th("b", "Tempo")}${th("d", "Dificultad")}${th("s", "Estado")}<th class="hm">Tab</th></tr></thead><tbody>
   ${list.map((s, i) => { const r = rec(s.id), has = !!window.TABS?.[s.id]; return `<tr data-id="${s.id}"><td class="n">${pad(SONGS.indexOf(s) + 1)}</td>
    <td><div class="t">${esc(s.title)}</div><div class="a">${esc(s.genre)}</div></td><td class="a hm">${esc(s.artist)}</td>
    <td class="bpm">${s.bpm ? `${s.bpm} <small>bpm</small>` : "—"}</td><td>${dots(diffOf(s))}</td>
