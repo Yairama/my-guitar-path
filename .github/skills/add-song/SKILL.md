@@ -27,3 +27,11 @@ Sitio estático sin build: `index.html` + `app.js` (SONGS) + `tabs-data.js` (TAB
 - No copiar transcripciones completas con copyright de terceros: usar fragmentos o material que aporte el usuario.
 - Usar el `n` original de la partitura en los compases; si faltan compases, no inventarlos.
 - Todo el texto de la interfaz en español.
+
+## Fuentes de música peruana (buscar aquí primero)
+- Alex Mendoza: https://alexmendozaguitarraperu.blogspot.com (feed de búsqueda: `/feeds/posts/default?alt=json&q=TÍTULO`; las páginas son imágenes .bmp)
+- Acordes en Blanco y Rojo: https://acordesenblancoyrojo.blogspot.com (tab y acordes de vals peruano)
+- marareq (índice de partituras/tabs peruanas): https://sites.google.com/site/marareq/musicaperuana-bibliografia/partituras
+- Josecor: https://partiturasjosecorh.blogspot.com (sobre todo orquesta; la guitarra suele ir con «Armonía»)
+- Música Peruana (PDF, probablemente de pago): https://musicaperuana.com
+- Saúl Castro (tabs de vals en guitarra criolla): Patreon y YouTube
