@@ -2,7 +2,7 @@ const DIFF = ["", "Muy fácil", "Fácil", "Media", "Difícil", "Experta"];
 const STAT = ["Por aprender", "Aprendiendo", "Dominada"];
 const NAMES = ["C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B"];
 /* bpm = tempo de reproducción (negras, en las unidades de la tab). src: g = medido en la grabación (Deezer) · t = tempo escrito en la tab */
-const TEMPO = { payaso: [120, "t"], nem: [71, "t"], regresa: [124, "t"], mirlos: [92, "t"], "7w3d": [130, "t"], knee: [98, "g"], love: [160, "t"], malpaso: [120, "t"], huye: [144, "g"], nada: [138, "g"], canete: [150, "t"], rsc: [135, "g"], dowant: [85, "g"], jack: [170, "t"], evergreen: [117, "t"] };
+const TEMPO = { payaso: [140, "t"], wonder: [87, "g"], nem: [71, "t"], regresa: [124, "t"], mirlos: [92, "t"], "7w3d": [130, "t"], knee: [98, "g"], love: [160, "t"], malpaso: [120, "t"], huye: [144, "g"], nada: [138, "g"], canete: [150, "t"], rsc: [135, "g"], dowant: [85, "g"], jack: [170, "t"], evergreen: [117, "t"] };
 SONGS.forEach(s => { const t = TEMPO[s.id]; if (t) { s.bpm = t[0]; s.src = t[1]; } });
 const srcTxt = s => s.src === "g" ? "medido en la grabación" : "según la tab";
 
