@@ -55,15 +55,19 @@ class GuitarTab extends HTMLElement {
       return mx >= 3 || strum ? "rs" : "pk";
     });
     // orden de reproducción con repeticiones expandidas
-    const seq = []; let st = 0;
+    const seq = [], info = []; let st = 0;
     d.m.forEach((m, mi) => {
       if (m.rs) st = mi;
-      seq.push(mi);
-      if (m.rp) { for (let r = 1; r < m.rp; r++) for (let j = st; j <= mi; j++) seq.push(j); st = mi + 1; }
+      seq.push(mi); info.push(m.rp ? { end: mi, pass: 1, of: m.rp } : null);
+      if (m.rp) {
+        for (let j = st; j < mi; j++) info[seq.length - 1 - (mi - j)] = { end: mi, pass: 1, of: m.rp };
+        for (let r = 1; r < m.rp; r++) for (let j = st; j <= mi; j++) { seq.push(j); info.push({ end: mi, pass: r + 1, of: m.rp }); }
+        st = mi + 1;
+      }
     });
     this._seq = seq;
-    seq.forEach(mi => d.m[mi].b.forEach((b, i) => {
-      this._beats.push({ m: mi, i, b, t: tw * 240 / d.bpm, dur: durOf(b) * 240 / d.bpm, k: mi + "-" + i });
+    seq.forEach((mi, si) => d.m[mi].b.forEach((b, i) => {
+      this._beats.push({ m: mi, i, b, rep: info[si], t: tw * 240 / d.bpm, dur: durOf(b) * 240 / d.bpm, k: mi + "-" + i });
       tw += durOf(b);
     }));
     this._total = tw * 240 / d.bpm;
@@ -136,7 +140,7 @@ class GuitarTab extends HTMLElement {
         if (d.m[mi].rs) out += S("line", { class: "bar", x1: x + 4, x2: x + 4, y1: TOP, y2: BASEY }) + [1.5, 3.5].map(i => S("circle", { cx: x + 10, cy: TOP + i * LG, r: 2.2, fill: "currentColor" })).join("");
         if (d.m[mi].rp) {
           out += S("line", { class: "bar", x1: x + mw - 4, x2: x + mw - 4, y1: TOP, y2: BASEY }) + [1.5, 3.5].map(i => S("circle", { cx: x + mw - 10, cy: TOP + i * LG, r: 2.2, fill: "currentColor" })).join("");
-          out += S("text", { class: "rpt", x: x + mw - 6, y: TOP - 14, "text-anchor": "end" }, `×${d.m[mi].rp}`);
+          out += S("text", { class: "rpt", x: x + mw - 6, y: TOP - 14, "text-anchor": "end", "data-m": mi, "data-of": d.m[mi].rp }, `×${d.m[mi].rp}`);
         }
         let cx = x + 16 * s; const xs = [];
         mb.forEach((b, i) => { const w = m.bw[i] * s; xs.push(cx + w / 2); cx += w; });
@@ -219,7 +223,12 @@ class GuitarTab extends HTMLElement {
     this.querySelectorAll(".mrect.cur").forEach(e => e.classList.remove("cur"));
     this.querySelectorAll(".ph").forEach(e => e.style.opacity = 0);
     this._hi = hi;
+    this.querySelectorAll(".rpt").forEach(e => { e.textContent = `×${e.dataset.of}`; e.classList.remove("act"); });
     const ev = this._beats[hi]; if (!ev) return;
+    if (ev.rep) {
+      const rl = this.querySelector(`.rpt[data-m="${ev.rep.end}"]`);
+      if (rl) { rl.textContent = `${ev.rep.pass}/${ev.rep.of}`; rl.classList.add("act"); }
+    }
     const el = this._els?.[ev.k]; this._on = el;
     if (!el) return;
     el.classList.add("on");

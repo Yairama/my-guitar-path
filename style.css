@@ -156,6 +156,7 @@ guitar-tab{display:block}
 .gt-row .kind{font:700 9.5px var(--mono);letter-spacing:1.4px;fill:currentColor;opacity:.7}
 .gt-row .kind.rs{fill:#c8321c;opacity:1}
 .gt-row .rpt{fill:#c8321c;font:700 13px var(--mono)}
+.gt-row .rpt.act{font-size:17px;paint-order:stroke;stroke:var(--paper,#f6efe0);stroke-width:4px}
 .gt-row .arc{fill:none;stroke:currentColor;stroke-width:1.3}
 .gt-row .arcl{fill:currentColor;font:700 10px var(--mono);text-anchor:middle}
 .gt-row .sl{stroke:currentColor;stroke-width:1.8}
