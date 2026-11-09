@@ -105,3 +105,5 @@ addEventListener("hashchange", route);
 q.oninput = () => { if (location.hash.length > 2) location.hash = "#/"; else home(); };
 document.getElementById("brand").onclick = () => location.hash = "#/";
 route();
+
+document.addEventListener('keydown', e => { if (e.key !== 'Escape') return; document.querySelectorAll('guitar-tab').forEach(t => { if (t._playing) { t.stop(); t._mark(-1); } }); });
