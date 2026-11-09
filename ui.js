@@ -18,6 +18,7 @@ const app = document.getElementById("app"), q = document.getElementById("q");
 const F = { st: "all", d: 0, k: "t", asc: true };
 const pad = n => String(n).padStart(2, "0");
 
+const incomplete = id => { const t = window.TABS?.[id]; return !!t && (t.m.length < t.total || !!t.inc); };
 function home() {
   const total = SONGS.length, done = SONGS.filter(s => rec(s.id).status === 2).length, learning = SONGS.filter(s => rec(s.id).status === 1).length;
   const term = q.value.trim().toLowerCase();
@@ -37,7 +38,7 @@ function home() {
   ${list.map((s, i) => { const r = rec(s.id), has = !!window.TABS?.[s.id]; return `<tr data-id="${s.id}"><td class="n">${pad(SONGS.indexOf(s) + 1)}</td>
    <td><div class="t">${esc(s.title)}</div><div class="a">${esc(s.genre)}</div></td><td class="a hm">${esc(s.artist)}</td>
    <td class="bpm">${s.bpm ? `${s.bpm} <small>bpm</small>` : "—"}</td><td>${dots(diffOf(s))}</td>
-   <td><span class="stamp s${r.status}">${STAT[r.status]}</span></td><td class="tabk hm ${has ? "y" : ""}">${has ? "♪ tab" : "pendiente"}</td></tr>`; }).join("")}</tbody></table>` : `<div class="none">Nada con esos filtros.</div>`}`;
+   <td><span class="stamp s${r.status}">${STAT[r.status]}</span></td><td class="tabk hm ${has ? "y" : ""} ${incomplete(s.id) ? "inc" : ""}">${has ? (incomplete(s.id) ? "⚠ incompleta" : "♪ tab") : "pendiente"}</td></tr>`; }).join("")}</tbody></table>` : `<div class="none">Nada con esos filtros.</div>`}`;
   app.querySelectorAll("[data-st]").forEach(b => b.onclick = () => { F.st = b.dataset.st; home(); });
   app.querySelectorAll("[data-d]").forEach(b => b.onclick = () => { F.d = +b.dataset.d; home(); });
   app.querySelectorAll("th[data-k]").forEach(h => h.onclick = () => { F.asc = F.k === h.dataset.k ? !F.asc : true; F.k = h.dataset.k; home(); });
@@ -59,7 +60,7 @@ function detail(id) {
   const frag = t ? `Fragmento: compases ${1 + (t.off || 0)}–${t.m.length + (t.off || 0)} de ${t.total}` : "";
   app.innerHTML = `
   <a class="crumb" href="#/">← Índice</a>
-  <section class="head"><div class="eyebrow">${esc(s.genre)}${s.year ? " · " + s.year : ""}</div><h1>${esc(s.title)}</h1><div class="by">${esc(s.artist)}</div>
+  <section class="head"><div class="eyebrow">${esc(s.genre)}${s.year ? " · " + s.year : ""}</div><h1>${esc(s.title)}</h1><div class="by">${esc(s.artist)}</div>${incomplete(s.id) ? `<div class="incb">⚠ Tab incompleta · ${t.m.length < t.total ? `faltan ${t.total - t.m.length} de ${t.total} compases` : "versión parcial"}</div>` : ""}
    <div class="links"><a class="yt" target="_blank" rel="noopener" href="${yt(s.yt)}">Escuchar en YouTube</a><a class="yt" target="_blank" rel="noopener" href="${yt(s.ytLesson)}">Tutorial</a>
    <span class="sp"></span><select id="st">${STAT.map((n, i) => `<option value="${i}" ${r.status === i ? "selected" : ""}>${n}</option>`).join("")}</select></div></section>
   <div class="strip">${cell("Tempo", s.bpm ? s.bpm + " bpm" : "", s.bpm ? srcTxt(s) : "")}${cell("Dificultad", DIFF[d])}${a ? cell("Afinación", a.std ? "Estándar" : a.tun, a.tun) : ""}${a ? cell("Compás", a.sigs.join(" · ")) : ""}${a ? cell("Mástil", a.min === a.max ? "traste " + a.min : `trastes ${a.min}–${a.max}`) : ""}</div>

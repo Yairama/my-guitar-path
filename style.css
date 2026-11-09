@@ -61,7 +61,8 @@ button{cursor:pointer}
 .bpm small{color:var(--ink2)}
 .stamp{font:700 .66rem var(--mono);letter-spacing:1.3px;text-transform:uppercase;border:1.5px solid currentColor;padding:3px 7px;border-radius:2px;display:inline-block;white-space:nowrap}
 .stamp.s0{color:var(--ink2);opacity:.7}.stamp.s1{color:var(--gold)}.stamp.s2{color:var(--ac);transform:rotate(-3deg)}
-.tabk{font:.7rem var(--mono);color:var(--ink2)}.tabk.y{color:var(--ink)}
+.tabk{font:.7rem var(--mono);color:var(--ink2)}.tabk.y{color:var(--ink)}.tabk.inc{color:#c8321c;font-weight:700}
+.incb{display:inline-block;margin-top:.6rem;padding:.2rem .6rem;border:1.5px solid #c8321c;color:#c8321c;font:700 .72rem var(--mono);text-transform:uppercase;letter-spacing:.05em}
 .none{padding:50px 0;text-align:center;font-style:italic;color:var(--ink2)}
 
 .crumb{display:inline-block;margin:26px 0 0;font:.75rem var(--mono);letter-spacing:1px;text-transform:uppercase;text-decoration:none;color:var(--ink2);border-bottom:1px solid transparent}
